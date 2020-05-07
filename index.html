@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+    <html lang="en">
+    	<head>
+    		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+    		<!-- Bootstrap CSS -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+            <title>Stopwatch and Counter for Fencing</title>
+
+<style>
+   f1a { color: blue; }
+   f2a { color: blue; }
+ 
+    #timerContainer {
+      max-width: 500px;
+      margin: auto;
+      margin:20px auto;
+      min-height:60px;
+      border-top:0px;
+    }
+    .timer, .timer1, .reset, .reset1{
+      float:left;
+      padding:20px ;
+      font-size:24px;
+      text-align:center;
+      color:#03000fff;
+      background:#A90000;
+      cursor:pointer
+    }
+    .reset, .reset1 {
+      background:#550000;
+      color:white;
+      border-left:1px solid #990000;
+    }
+    .reset:hover {
+      background:#CC0000;
+    }
+    .lighter {
+      background:#CC0000
+    }
+ 
+</style>
+
+<script type="text/javascript">
+
+const MaxPoints = 15; // 5,10,15,45 are typical for fencing.
+
+function ClearAll() { 
+    document.getElementById("S12").innerHTML="0";
+    document.getElementById("S21").innerHTML="0";
+    document.getElementById("S12a").innerHTML="0";
+    document.getElementById("S21a").innerHTML="0";
+} 
+
+function ClearNull() { 
+    document.getElementById("S12").innerHTML="0";
+    document.getElementById("S21").innerHTML="0";
+}     
+    
+function RedPlus() {
+    var e=document.getElementById("S12").innerHTML[0];
+    var n1=document.getElementById("S12a").innerHTML;
+    var a=document.getElementById("S21").innerHTML[0];
+    if ( n1<MaxPoints ) { n1=n1*1+1; };
+    document.getElementById("S12").innerHTML=e;
+    document.getElementById("S12a").innerHTML=n1; 
+    if ( n1==MaxPoints ) { EndBout(); }
+    else {if ( e=="A" || a=="A" ) { EndBout(); }; }    
+}
+
+function RedMinus() {
+    var e=document.getElementById("S12").innerHTML[0];
+    var n1=document.getElementById("S12a").innerHTML;
+    if ( n1>0 ) { n1=n1*1-1; };
+    document.getElementById("S12").innerHTML=e;
+    document.getElementById("S12a").innerHTML=n1;
+}
+
+function GreenPlus() {
+    var e=document.getElementById("S21").innerHTML[0];
+    var n1=document.getElementById("S21a").innerHTML;
+    var a=document.getElementById("S12").innerHTML[0];
+    if ( n1<MaxPoints ) { n1=n1*1+1; };
+    document.getElementById("S21").innerHTML=e;
+    document.getElementById("S21a").innerHTML=n1;
+    if ( n1==MaxPoints ) { EndBout(); }
+    else {if ( e=="A" || a=="A" ) { EndBout(); }; }
+}
+
+function GreenMinus() {
+    var e=document.getElementById("S21").innerHTML[0];
+    var n1=document.getElementById("S21a").innerHTML;
+    if ( n1>0 ) { n1=n1*1-1; };
+    document.getElementById("S21").innerHTML=e;
+    document.getElementById("S21a").innerHTML=n1;
+}
+
+function GreenV() {
+    document.getElementById("S21").innerHTML="A";
+}    
+function RedV() {
+    document.getElementById("S12").innerHTML="A";
+}
+    
+function EndBout() { 
+    var e1=document.getElementById("S21").innerHTML[0];
+    var e2=document.getElementById("S12").innerHTML[0];
+    var n1=document.getElementById("S21a").innerHTML;
+    var n2=document.getElementById("S12a").innerHTML;
+    if ( n1==MaxPoints ) { e1="V"; e2="D" };
+    if ( n2==MaxPoints ) { e2="V"; e1="D" };
+    if ( n1>n2 ) { e1="V"; e2="D" };
+    if ( n1<n2 ) { e2="V"; e1="D" };
+    if ( n1==n2 ) {
+      if (e1=="A") { e1="V"; e2="D" }
+      if (e2=="A") { e2="V"; e1="D" } 
+    };
+    document.getElementById("S21").innerHTML=e1;
+    document.getElementById("S12").innerHTML=e2;
+    document.getElementById("S21a").innerHTML=n1;
+    document.getElementById("S12a").innerHTML=n2;
+}
+    
+function Double() {
+    var e1=document.getElementById("S21").innerHTML[0]; 
+    var n1=document.getElementById("S21a").innerHTML;
+    var e2=document.getElementById("S12").innerHTML[0];
+    var n2=document.getElementById("S12a").innerHTML;
+    if ( n1<MaxPoints ) { n1=n1*1+1; };
+    if ( n2<MaxPoints ) { n2=n2*1+1; };
+    document.getElementById("S21").innerHTML=e1;
+    document.getElementById("S12").innerHTML=e2;
+    document.getElementById("S21a").innerHTML=n1;
+    document.getElementById("S12a").innerHTML=n2;
+    if ( n1==MaxPoints && n2<MaxPoints ) { EndBout(); };
+    if ( n2==MaxPoints && n1<MaxPoints ) { EndBout(); };
+    if ( n2==MaxPoints && n1==MaxPoints ) { GreenMinus(); RedMinus(); }  
+}
+</script>   
+
+</head>
+<body>
+<center>    
+<h2>DA to 15 Points/Epee</h2>
+
+<button class="btn btn-primary" type="submit" onclick="RedV()">V</button>        
+<button class="btn btn-primary" type="submit" onclick="RedMinus()">-</button>
+<button class="btn btn-primary" type="submit" onclick="ClearAll()">C</button>
+<button class="btn btn-primary" type="submit" onclick="ClearNull()">C1</button>
+<button class="btn btn-primary" type="submit" onclick="GreenMinus()">-</button>
+<button class="btn btn-primary" type="submit" onclick="GreenV()">V</button>
+<p>    
+    <h1> <center> <font color="red">RED</font> <f1 id="S12">0</f1><f1a id="S12a">0 </f1a> <f2 id="S21">0</f2><f2a id="S21a">0 </f2a> <font color="green">GREEN</font></center> </h1>
+<p>  
+<button class="btn btn-primary" type="submit" onclick="RedPlus()">- + -</button>
+<button class="btn btn-primary" type="submit" onclick="Double()">+ D +</button>    
+<button class="btn btn-primary" type="submit" onclick="EndBout()">- Z -</button>   
+<button class="btn btn-primary" type="submit" onclick="GreenPlus()">- + -</button>
+
+</center>
+    
+<div id="timerContainer">
+    <div class="timer" onclick="startTimer()">3:00</div>
+    <div class="startTimer reset" onclick="startTimer(); startTimer1()">
+      <i class="fas fa-play"></i>
+    </div>
+    <div class="pauseTimer reset" onclick="pauseTimer(); pauseTimer1()">
+      <i class="fas fa-pause"></i>
+    </div>
+    <div class="resetTimer reset" onclick="resetTimer(); resetTimer1()">Reset</div>
+    
+    <div class="timer1" onclick="startTimer1()">1:00</div>
+    <div class="resetTimer1 reset1" onclick="resetTimer1()">Reset</div>
+</div>
+  <script type="text/javascript" src="stopWatch.js"></script>
+</body>
+</html>
